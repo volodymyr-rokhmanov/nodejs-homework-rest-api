@@ -21,8 +21,8 @@ const register = async (req, res) => {
   const newUser = await User.create({ ...req.body, password: hashPassword });
 
   res.status(201).json({
-    name: newUser.name,
     email: newUser.email,
+    subscription: newUser.subscription,
   });
 };
 
@@ -45,16 +45,20 @@ const login = async (req, res) => {
   await User.findByIdAndUpdate(user._id, { token });
 
   res.json({
-    token,
+    token: token,
+    user: {
+      email: email,
+      subscription: user.subscription,
+    },
   });
 };
 
 const getCurrent = async (req, res) => {
-  const { name, email } = req.user;
+  const { email, subscription } = req.user;
 
   res.json({
-    name,
-    email,
+    email: email,
+    subscription: subscription,
   });
 };
 
@@ -62,8 +66,8 @@ const logout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: "" });
 
-  res.json({
-    message: "Logout success",
+  res.status(204).json({
+    message: "No Content",
   });
 };
 

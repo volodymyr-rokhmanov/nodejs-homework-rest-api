@@ -39,4 +39,6 @@ router.patch(
   ctrl.updateFavorite
 );
 
+// router.get("/", authenticate, ctrl.getFavorite);
+
 module.exports = router;
